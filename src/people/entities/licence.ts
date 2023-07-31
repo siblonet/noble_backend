@@ -12,6 +12,6 @@ export interface LicenceDef extends Document {
   actimotif?: string;
   compu?: string;
   defverson?: string;
-  logcount?: number;
+  logcount?: Number;
   create_tim?: Date;
 }

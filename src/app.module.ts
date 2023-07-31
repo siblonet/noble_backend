@@ -181,9 +181,7 @@ function thisiswhat(eee: any): any {
     ActivityModule, 
     PeopleModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(thisiswhat(process.env.DATA_HANDLER), {
-      useNewUrlParser: true,
-    })
+    MongooseModule.forRoot(thisiswhat(process.env.DATA_HANDLER))
   ],
   controllers: [AppController],
   providers: [AppService, MineindService],
