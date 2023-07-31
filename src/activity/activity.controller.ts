@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   Post,
   Put,
@@ -22,29 +21,29 @@ export class ActivityController {
     return await this.activityService.geneRate();
   }
 
-  @Get()
+  @Post()
   async listAll(): Promise<Activity> {
     return await this.activityService.findAll();
   }
 
-  @Get("activityrep")
+  @Post("activityrep")
   async findAllrep(): Promise<ActivityRep> {
     return await this.activityService.findAllrep();
   }
 
 
   
-  @Get("compte")
+  @Post("compte")
   async listAllc(): Promise<Activity> {
     return await this.activityService.findAllc();
   }
 
-  @Get("lica")
+  @Post("lica")
   async listAlll(): Promise<Activity> {
     return await this.activityService.findAlll();
   }
 
-  @Get("defda")
+  @Post("defda")
   async listAlld(): Promise<Activity> {
     return await this.activityService.findAlld();
   }

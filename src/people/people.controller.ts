@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { LicenceDef } from './entities/licence';
 import { Person, PLog } from './entities/person.entity';
 import { PeopleService } from './people.service';
@@ -40,8 +40,8 @@ export class PeopleController {
 
 
   //getting all lisence
-  @Get("all/licence")
-  async defDaarfetchAll(): Promise<LicenceDef[]> {
+  @Post("all/licence")
+  async defDaarfetchAll(@Body() {}): Promise<LicenceDef[]> {
     return await this.peopleService.defDaarfetchAll();
   }
 
