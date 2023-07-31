@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  var whitelist = ['https://digitloop.netlify.app', 'digitloop.netlify.app'];
+  var whitelist = ['https://digitloop.netlify.app', 'digitloop.netlify.app', 'http://localhost:4200'];
   app.enableCors({
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
