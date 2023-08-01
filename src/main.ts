@@ -3,21 +3,15 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  var whitelist = ['https://digitloop.netlify.app', 'digitloop.netlify.app'];
-  app.enableCors({
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        console.log("allowed cors for:", origin)
-        callback(null, true)
-      } else {
-        console.log("blocked cors for:", origin)
-        callback(new Error('Not allowed by CORS'))
-      }
-    },
-    allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
-    methods: "GET,PUT,POST,DELETE,UPDATE,OPTIONS",
-    credentials: true,
-  });
+  const options = {
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true
+  };
+
+  app.enableCors(options);
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
