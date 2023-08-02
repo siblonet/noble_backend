@@ -13,7 +13,6 @@ export class PeopleController {
 
   @Post('login')
   async login(@Body() pLog: PLog) {
-    console.log(pLog)
     const user = await this.peopleService.login(pLog);
 
     return user
@@ -29,4 +28,5 @@ export class PeopleController {
   remove(@Param('id') id: string) {
     return this.peopleService.remove(+id);
   }
+
 }

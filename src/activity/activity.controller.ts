@@ -22,9 +22,8 @@ export class ActivityController {
     return await this.activityService.geneRate();
   }
 
-  @Post("trying")
-  async listAll(@Body() some: any): Promise<Activity> {
-    console.log(some)
+  @Get()
+  async listAll(): Promise<Activity> {
     return await this.activityService.findAll();
   }
 
