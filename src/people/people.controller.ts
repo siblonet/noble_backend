@@ -1,5 +1,4 @@
 import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { LicenceDef } from './entities/licence';
 import { Person, PLog } from './entities/person.entity';
 import { PeopleService } from './people.service';
 
@@ -29,29 +28,4 @@ export class PeopleController {
   remove(@Param('id') id: string) {
     return this.peopleService.remove(+id);
   }
-
-
-
-  @Post("one/licence")
-  async defDaarCreate(@Body() licenceDTO: LicenceDef) {
-    return await this.peopleService.defDaarCreate(licenceDTO);
-  }
-
-
-
-  //getting all lisence
-  @Post("all/licence")
-  async defDaarfetchAll(@Body() {}): Promise<LicenceDef[]> {
-    return await this.peopleService.defDaarfetchAll();
-  }
-
-
-  
-
-    // DefDaar licence cheking
-    @Post("two/validating")
-    async defDaar(@Body() licenceDTO: LicenceDef) {
-      return await this.peopleService.defDaar(licenceDTO);
-  
-    }
 }

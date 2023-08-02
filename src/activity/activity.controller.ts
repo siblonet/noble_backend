@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
@@ -21,32 +22,24 @@ export class ActivityController {
     return await this.activityService.geneRate();
   }
 
-  @Post()
+  @Get()
   async listAll(): Promise<Activity> {
     return await this.activityService.findAll();
   }
 
-  @Post("activityrep")
+  @Get("activityrep")
   async findAllrep(): Promise<ActivityRep> {
     return await this.activityService.findAllrep();
   }
 
 
   
-  @Post("compte")
+  @Get("compte")
   async listAllc(): Promise<Activity> {
     return await this.activityService.findAllc();
   }
 
-  @Post("lica")
-  async listAlll(): Promise<Activity> {
-    return await this.activityService.findAlll();
-  }
 
-  @Post("defda")
-  async listAlld(): Promise<Activity> {
-    return await this.activityService.findAlld();
-  }
 
   //increasing   
   @Put(`activity/:id`)
@@ -60,17 +53,6 @@ export class ActivityController {
       return await this.activityService.increaseSomerep(id);
     }
 
-  //increasing   
-  @Put(`tree/defdaar/:id`)
-  async increaseDefdaar(@Param("id") id: string): Promise<any> {
-    return await this.activityService.increaseDefdaar(id);
-  }
-
-  //increasing   
-  @Put(`fourth/tree/licence/:id`)
-  async increaseLicence(@Param("id") id: string): Promise<any> {
-    return await this.activityService.increaseLicence(id);
-  }
 
 
   //increasing   

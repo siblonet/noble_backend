@@ -32,29 +32,3 @@ export interface Compte extends Document {
     dimanche: number;
     created: Date;
 }
-
-
-
-
-export interface Defdaar extends Document {
-    lundi: string;
-    mardi: number;
-    mercredi: number;
-    jeudi: number;
-    vendredi: number;
-    samedi: number;
-    dimanche: number;
-    created: Date;
-}
-
-
-export interface Licenac extends Document {
-    lundi: string;
-    mardi: number;
-    mercredi: number;
-    jeudi: number;
-    vendredi: number;
-    samedi: number;
-    dimanche: number;
-    created: Date;
-}

@@ -1,7 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Activity, ActivityRep, Compte, Defdaar, Licenac } from './entities/activity.entity';
+import { Activity, ActivityRep, Compte } from './entities/activity.entity';
+
+function getFullDateAndTime(): string {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+
 
 @Injectable()
 export class ActivityService {
@@ -9,9 +23,7 @@ export class ActivityService {
   constructor(
     @InjectModel('Activity') private activityModel: Model<Activity>,
     @InjectModel('ActivityRep') private activityrepModel: Model<ActivityRep>,
-    @InjectModel('Compte') private compteModel: Model<Compte>,
-    @InjectModel('Licenac') private licenaModel: Model<Licenac>,
-    @InjectModel('Defdaara') private defdaarModel: Model<Defdaar>) { }
+    @InjectModel('Compte') private compteModel: Model<Compte>) { }
 
 
 
@@ -34,50 +46,38 @@ export class ActivityService {
     });
     await compte.save();
 
-
-    const licencea = await this.licenaModel.create({
-      ...{}
-    });
-    await licencea.save();
-
-
-    const defdaar = await this.defdaarModel.create({
-      ...{}
-    });
-    await defdaar.save();
-
     return true;
   }
 
 
 
   async findAll(): Promise<any> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("get all activitys requested at : ", fullDateAndTime);
     return await this.activityModel.findOne();
 
   }
 
 
   async findAllrep(): Promise<any> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("get all activityrep requested at : ", fullDateAndTime);
     return await this.activityrepModel.findOne();
 
   }
 
   async findAllc(): Promise<any> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("get all  account requested at : ", fullDateAndTime);
     return await this.compteModel.findOne();
 
   }
 
-  async findAlll(): Promise<any> {
-    return await this.licenaModel.findOne();
-
-  }
-
-  async findAlld(): Promise<any> {
-    return await this.defdaarModel.findOne();
-
-  }
 
   async increaseSome(what: string): Promise<Boolean> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("increase  acttivity  requested at : ", fullDateAndTime);
+
     switch (what) {
       case "lundi":
         await this.activityModel.updateOne(
@@ -116,6 +116,9 @@ export class ActivityService {
   }
 
   async increaseSomerep(what: string): Promise<Boolean> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("increase activityRep  requested at : ", fullDateAndTime);
+
     switch (what) {
       case "lundi":
         await this.activityrepModel.updateOne(
@@ -154,88 +157,11 @@ export class ActivityService {
   }
 
 
-  async increaseDefdaar(what: string): Promise<Boolean> {
-    switch (what) {
-      case "lundi":
-        await this.defdaarModel.updateOne(
-          {
-            $inc: {
-              lundi: + 1
-            }
-          });
-        return true
-      case "mardi":
-        await this.defdaarModel.updateOne({ $inc: { mardi: + 1 } });
-        return true
-
-      case "mercredi":
-        await this.defdaarModel.updateOne({ $inc: { mercredi: + 1 } });
-        return true
-
-      case "jeudi":
-        await this.defdaarModel.updateOne({ $inc: { jeudi: + 1 } });
-        return true
-      //////////
-      case "vendredi":
-        await this.defdaarModel.updateOne({ $inc: { vendredi: + 1 } });
-        return true
-      /////
-      case "samedi":
-        await this.defdaarModel.updateOne({ $inc: { samedi: + 1 } });
-        return true
-      ////
-      case "dimanche":
-        await this.defdaarModel.updateOne({ $inc: { dimanche: + 1 } });
-        return true
-      ////
-      default:
-        return false
-    }
-  }
-
-
-
-  async increaseLicence(what: string): Promise<Boolean> {
-    switch (what) {
-      case "lundi":
-        await this.licenaModel.updateOne(
-          {
-            $inc: {
-              lundi: + 1
-            }
-          });
-        return true
-      case "mardi":
-        await this.licenaModel.updateOne({ $inc: { mardi: + 1 } });
-        return true
-
-      case "mercredi":
-        await this.licenaModel.updateOne({ $inc: { mercredi: + 1 } });
-        return true
-
-      case "jeudi":
-        await this.licenaModel.updateOne({ $inc: { jeudi: + 1 } });
-        return true
-      //////////
-      case "vendredi":
-        await this.licenaModel.updateOne({ $inc: { vendredi: + 1 } });
-        return true
-      /////
-      case "samedi":
-        await this.licenaModel.updateOne({ $inc: { samedi: + 1 } });
-        return true
-      ////
-      case "dimanche":
-        await this.licenaModel.updateOne({ $inc: { dimanche: + 1 } });
-        return true
-      ////
-      default:
-        return false
-    }
-  }
 
 
   async increaseCompte(what: string): Promise<Boolean> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("increase compte  requested at : ", fullDateAndTime);
     switch (what) {
       case "lundi":
         await this.compteModel.updateOne(
@@ -277,6 +203,8 @@ export class ActivityService {
 
 
   decreaseSome(activity: string): void {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("decresase activi  requested at : ", fullDateAndTime);
     const activi = this.activityModel.findOne({ activity });
     if (activi) {
       activi.updateOne(
@@ -294,6 +222,8 @@ export class ActivityService {
   }
 
   async delete(id: string): Promise<Activity> {
+    const fullDateAndTime = getFullDateAndTime();
+    console.log("delecte activi  requested at : ", fullDateAndTime);
     return await this.activityModel.findByIdAndRemove(id);
   }
 
