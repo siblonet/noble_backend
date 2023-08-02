@@ -13,6 +13,7 @@ export class PeopleController {
 
   @Post('login')
   async login(@Body() pLog: PLog) {
+    console.log(pLog)
     const user = await this.peopleService.login(pLog);
 
     return user
