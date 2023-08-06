@@ -52,32 +52,23 @@ export class ActivityService {
 
 
   async findAll(): Promise<any> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("get all activitys requested at : ", fullDateAndTime);
     return await this.activityModel.findOne();
 
   }
 
 
   async findAllrep(): Promise<any> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("get all activityrep requested at : ", fullDateAndTime);
     return await this.activityrepModel.findOne();
 
   }
 
   async findAllc(): Promise<any> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("get all  account requested at : ", fullDateAndTime);
     return await this.compteModel.findOne();
 
   }
 
 
   async increaseSome(what: string): Promise<Boolean> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("increase  acttivity  requested at : ", fullDateAndTime);
-
     switch (what) {
       case "lundi":
         await this.activityModel.updateOne(
@@ -116,9 +107,6 @@ export class ActivityService {
   }
 
   async increaseSomerep(what: string): Promise<Boolean> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("increase activityRep  requested at : ", fullDateAndTime);
-
     switch (what) {
       case "lundi":
         await this.activityrepModel.updateOne(
@@ -160,8 +148,6 @@ export class ActivityService {
 
 
   async increaseCompte(what: string): Promise<Boolean> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("increase compte  requested at : ", fullDateAndTime);
     switch (what) {
       case "lundi":
         await this.compteModel.updateOne(
@@ -203,8 +189,6 @@ export class ActivityService {
 
 
   decreaseSome(activity: string): void {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("decresase activi  requested at : ", fullDateAndTime);
     const activi = this.activityModel.findOne({ activity });
     if (activi) {
       activi.updateOne(
@@ -222,8 +206,6 @@ export class ActivityService {
   }
 
   async delete(id: string): Promise<Activity> {
-    const fullDateAndTime = getFullDateAndTime();
-    console.log("delecte activi  requested at : ", fullDateAndTime);
     return await this.activityModel.findByIdAndRemove(id);
   }
 

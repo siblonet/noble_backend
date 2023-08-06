@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, Delete, Get } from '@nestjs/common';
 import { Person, PLog } from './entities/person.entity';
 import { PeopleService } from './people.service';
 
@@ -24,9 +24,15 @@ export class PeopleController {
     return this.peopleService.update(+id, updatePersonDto);
   }
 
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.peopleService.remove(+id);
   }
 
+
+  @Get("persons")
+  async allPersons(): Promise<Person[]> {
+    return await this.peopleService.allPerson();
+  }
 }

@@ -99,4 +99,9 @@ export class PeopleService {
     return `This action removes a #${id} person`;
   }
 
+
+  async allPerson(): Promise<Person[]> {
+    return await this.personModel.find();
+
+  }
 }
