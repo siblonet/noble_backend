@@ -84,11 +84,21 @@ export class PeopleService {
     if (!person) {
       throw new HttpException('Invalid credentials', HttpStatus.FORBIDDEN);
     } else if (this.enderog(password, person.password)) {
-      return {token: this.generatToken(person)};
+      return { token: this.generatToken(person) };
     }
     throw new HttpException('Invalid credentials', HttpStatus.FORBIDDEN);
 
   }
+
+  async PersonUpte(id: any, persan: Person): Promise<any> {
+    const admin = await this.personModel.findByIdAndUpdate(id, persan);
+    if (!admin) {
+      throw new HttpException('femmes not found', HttpStatus.NOT_FOUND);
+    }
+    return "ok";
+
+  }
+
 
 
   update(id: number, persondto: Person) {

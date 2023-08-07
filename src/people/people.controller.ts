@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, Delete, Get, Put } from '@nestjs/common';
 import { Person, PLog } from './entities/person.entity';
 import { PeopleService } from './people.service';
 
@@ -16,6 +16,11 @@ export class PeopleController {
     const user = await this.peopleService.login(pLog);
 
     return user
+  }
+
+  @Put('personupdate/:id')
+  PersonUpte(@Param('id') id: string, @Body() persona: Person) {
+    return this.peopleService.PersonUpte(id, persona);
   }
 
 
