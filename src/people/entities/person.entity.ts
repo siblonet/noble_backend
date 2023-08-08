@@ -4,6 +4,7 @@ export interface PLog {
   }
   
   export interface Person {
+    _id?: string;
     name: string;
     lastname: string;
     phone: string;

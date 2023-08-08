@@ -55,9 +55,9 @@ export class PeopleService {
   }
 
   generatToken(person: Person): Object {
-    const { name, lastname, phone, mail, admin } = person;
-    const perset = `${name}°${lastname}°${phone}°${mail}°${admin}`
-    const dae = this.mineindService.whatisthis(perset)
+    const { _id, name, lastname, phone, mail, admin } = person;
+    const perset = `${_id}°${name}°${lastname}°${phone}°${mail}°${admin}`;
+    const dae = this.mineindService.whatisthis(perset);
     const adaa = dae.replaceAll("undefined", "");
     const doa = { token: adaa };
     return doa;
@@ -93,6 +93,7 @@ export class PeopleService {
   async PersonUpte(id: any, persan: Person): Promise<any> {
     const admin = await this.personModel.findByIdAndUpdate(id, persan);
     if (!admin) {
+      console.log(id);
       throw new HttpException('femmes not found', HttpStatus.NOT_FOUND);
     }
     return "ok";
