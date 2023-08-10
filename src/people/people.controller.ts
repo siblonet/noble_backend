@@ -24,6 +24,12 @@ export class PeopleController {
   }
 
 
+  @Put('passwordupdate/:id')
+  Passwordupdate(@Param('id') id: string, @Body() passwor: any) {
+    return this.peopleService.Passwordupdate(id, passwor);
+  }
+
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePersonDto: Person) {
     return this.peopleService.update(+id, updatePersonDto);
