@@ -7,8 +7,8 @@ export class PeopleController {
   constructor(private readonly peopleService: PeopleService) { }
 
   @Post()
-  create(@Body() persondto: Person) {
-    return this.peopleService.create(persondto);
+  create(@Body() person: Person) {
+    return this.peopleService.create(person);
   }
 
   @Post('login')

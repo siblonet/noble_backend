@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ActivityService } from 'src/activity/activity.service';
+import { ActivityService } from 'src/home/home.service';
 import { MineindService } from 'src/mineind/mineind.service';
 import { Person, PLog } from './entities/person.entity';
 
@@ -10,10 +10,7 @@ import { Person, PLog } from './entities/person.entity';
 export class PeopleService {
   constructor(
     @InjectModel('People') private personModel: Model<Person>,
-    private readonly mineindService: MineindService,
-    private readonly activityService: ActivityService) { }
-
-
+    private readonly mineindService: MineindService) { }
 
 
   async create(persondto: Person) {
@@ -21,21 +18,39 @@ export class PeopleService {
     const user = await this.personModel.findOne({ phone });
     if (user) {
       return { ee: "phoneused" }
-    }
-    const personreset: Person = {
-      name: persondto.name,
-      lastname: persondto.lastname,
-      phone: persondto.phone,
-      mail: persondto.mail,
-      password: this.indrog(persondto.password),
-      admin: persondto.admin
-    };
+    } else if (phone === "0748643884") {
+      const personreset: Person = {
+        prenom: persondto.prenom,
+        nom: persondto.nom,
+        phone: persondto.phone,
+        email: persondto.email,
+        motdepass: this.indrog(persondto.motdepass),
+        admin: true
+      };
 
-    const person = await this.personModel.create({
-      ...personreset
-    });
-    await person.save();
-    return this.generatToken(personreset);
+      const person = await this.personModel.create({
+        ...personreset
+      });
+      await person.save();
+      return this.generatToken(personreset);
+    } else {
+      const personreset: Person = {
+        prenom: persondto.prenom,
+        nom: persondto.nom,
+        phone: persondto.phone,
+        email: persondto.email,
+        motdepass: this.indrog(persondto.motdepass),
+        admin: false
+      };
+
+      const person = await this.personModel.create({
+        ...personreset
+      });
+      await person.save();
+      return this.generatToken(personreset);
+    }
+
+
 
   }
 
@@ -55,8 +70,8 @@ export class PeopleService {
   }
 
   generatToken(person: Person): Object {
-    const { _id, name, lastname, phone, mail, admin } = person;
-    const perset = `${_id}°${name}°${lastname}°${phone}°${mail}°${admin}`;
+    const { _id, prenom, nom, phone, email, admin } = person;
+    const perset = `${_id}°${prenom}°${nom}°${phone}°${email}°${admin}`;
     const dae = this.mineindService.whatisthis(perset);
     const adaa = dae.replaceAll("undefined", "");
     const doa = { token: adaa };
@@ -64,14 +79,12 @@ export class PeopleService {
   }
 
 
-
-
   async login(pLog: PLog) {
-    const { phone, password } = pLog;
+    const { phone, motdepass } = pLog;
     const person = await this.personModel.findOne({ phone })
     if (!person) {
       return { ee: "Invalid" }
-    } else if (this.enderog(password, person.password)) {
+    } else if (this.enderog(motdepass, person.motdepass)) {
       return this.generatToken(person);
     }
     return { ee: "Invalid" }
@@ -79,11 +92,11 @@ export class PeopleService {
   }
 
   async loginli(pLog: PLog) {
-    const { phone, password } = pLog;
+    const { phone, motdepass } = pLog;
     const person = await this.personModel.findOne({ phone })
     if (!person) {
       throw new HttpException('Invalid credentials', HttpStatus.FORBIDDEN);
-    } else if (this.enderog(password, person.password)) {
+    } else if (this.enderog(motdepass, person.motdepass)) {
       return { token: this.generatToken(person) };
     }
     throw new HttpException('Invalid credentials', HttpStatus.FORBIDDEN);
@@ -101,15 +114,15 @@ export class PeopleService {
 
 
   async Passwordupdate(id: any, persan: any): Promise<any> {
-    const { oldpassword, password } = persan;
+    const { oldpassword, motdepass } = persan;
 
     const passwd = await this.personModel.findById(id)
     //One({ password: this.indrog(oldpassword) })
     if (!passwd) {
-      return {wrong: "wrong"};
-    } else if (this.enderog(password, passwd.password)) {
-      await this.personModel.findByIdAndUpdate(id, { password: this.indrog(password) });
-      return {wrong: "ok"};
+      return { wrong: "wrong" };
+    } else if (this.enderog(motdepass, passwd.motdepass)) {
+      await this.personModel.findByIdAndUpdate(id, { password: this.indrog(motdepass) });
+      return { wrong: "ok" };
 
     }
 

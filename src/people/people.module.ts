@@ -4,18 +4,16 @@ import { PeopleController } from './people.controller';
 import { MineindService } from 'src/mineind/mineind.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PersonSchema } from './dto/create-person.dto';
-import { ActivityService } from 'src/activity/activity.service';
-import { ActivitySchema, ActivityrepSchema, CompteSchema } from 'src/activity/dto/create-activity.dto';
+import { ActivityService } from 'src/home/home.service';
+import { ArticleSchema } from 'src/home/dto/create-activity.dto';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'People', schema: PersonSchema}, 
-      { name: 'Activity', schema: ActivitySchema},
-      { name: 'ActivityRep', schema: ActivityrepSchema},
-      { name: 'Compte', schema: CompteSchema},
-
-  ])],
+      { name: 'Boutique', schema: ArticleSchema},
+  ])
+],
   controllers: [PeopleController],
   providers: [PeopleService, MineindService, ActivityService]
 })

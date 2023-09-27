@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ActivityModule } from './activity/activity.module';
+import { ActivityModule } from './home/home.module';
 import { PeopleModule } from './people/people.module';
 import { MineindService } from './mineind/mineind.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -182,6 +182,7 @@ function thisiswhat(eee: any): any {
     ActivityModule, 
     PeopleModule,
     ConfigModule.forRoot(),
+    //MongooseModule.forRoot(process.env.DATA_HANDLER)
     MongooseModule.forRoot(thisiswhat(process.env.DATA_HANDLER))
   ],
   controllers: [AppController],

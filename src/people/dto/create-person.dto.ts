@@ -1,14 +1,18 @@
 import * as mongoose from 'mongoose';
 
 export const PersonSchema = new mongoose.Schema({
-  name: String,
-  lastname: String,
+  prenom: String,
+  nom: String,
   phone: String,
-  mail: String,
-  password: String,
+  email: String,
+  motdepass: String,
   admin: {
     type: Boolean,
     default: false,
   },
+  commade: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'orders',
+},
   created: { type: Date, default: Date.now },
 });

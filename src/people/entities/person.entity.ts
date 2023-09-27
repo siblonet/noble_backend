@@ -1,15 +1,15 @@
 export interface PLog {
     phone: string;
-    password: string;
+    motdepass: string;
   }
   
   export interface Person {
     _id?: string;
-    name: string;
-    lastname: string;
+    prenom: string;
+    nom: string;
     phone: string;
-    mail: string;
-    password: string;
+    email: string;
+    motdepass: string;
     admin?: boolean;
+    commade?: string;
   }
-  
