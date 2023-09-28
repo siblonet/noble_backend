@@ -26,7 +26,7 @@ export class OrderService {
       ...acrticle
     });
     await articl.save();
-    return 'done';
+    return {done: 'done'};
   }
 
 

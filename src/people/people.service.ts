@@ -46,10 +46,8 @@ export class PeopleService {
         ...personreset
       });
       await person.save();
-      return this.generatToken(personreset);
+      return this.generatToken(person);
     }
-
-
 
   }
 
@@ -73,7 +71,7 @@ export class PeopleService {
     const perset = `${_id}°${prenom}°${nom}°${phone}°${email}°${admin}`;
     const dae = this.mineindService.whatisthis(perset);
     const adaa = dae.replaceAll("undefined", "");
-    const doa = { token: adaa };
+    const doa = { token: adaa, id: _id };
     return doa;
   }
 
