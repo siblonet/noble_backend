@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ActivityService } from 'src/home/home.service';
 import { MineindService } from 'src/mineind/mineind.service';
 import { Person, PLog } from './entities/person.entity';
 

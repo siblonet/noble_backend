@@ -11,6 +11,7 @@ export interface Article extends Document {
     addmateri: string;
     addtype: string;
     addphone: string;
+    quantity: string;
     addexpe: string;
     who: string;
     notes: string;

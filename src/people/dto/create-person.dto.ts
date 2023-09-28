@@ -10,9 +10,6 @@ export const PersonSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  commade: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'orders',
-},
+  commade: String,
   created: { type: Date, default: Date.now },
 });

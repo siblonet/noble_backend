@@ -11,11 +11,10 @@ export const ArticleSchema = new mongoose.Schema({
   addmateri: { type: String },
   addtype: { type: String },
   addphone: { type: String },
+  quantity: { type: String },
   addexpe: { type: String },
   who: { type: String },
   notes: { type: String },
   image: [{ima: String}],
   created: { type: Date, default: Date.now }
 });
-
-
