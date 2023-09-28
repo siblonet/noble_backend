@@ -1,15 +1,17 @@
 import { Document } from 'mongoose';
+import { Article } from 'src/home/entities/activity.entity';
+import { Person } from 'src/people/entities/person.entity';
 
 export interface Order extends Document {
     articles: [
         {
-            arti_id: string
-            quantcho: Number;
-            image: String;
-            color: String;
-            size: String;
+            arti_id: Article
+            quantcho: number;
+            image: string;
+            color: string;
+            size: string;
             statut: string;
-            prix: Number
+            prix: number
         }
     ];
     ville: string;
@@ -18,6 +20,6 @@ export interface Order extends Document {
     phone: string;
     note: string;
     statut: string;
-    client: string;
+    client: Person;
     created?: Date;
 }

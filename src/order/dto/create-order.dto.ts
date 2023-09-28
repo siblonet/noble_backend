@@ -4,7 +4,7 @@ export const OrderSchema = new mongoose.Schema({
   articles: [{
     arti_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Boutique',
+      ref: 'Boutique', // Corrected reference to 'Article' model
     },
     quantcho: Number,
     image: String,
@@ -12,11 +12,10 @@ export const OrderSchema = new mongoose.Schema({
     size: String,
     statut: {
       type: String,
-      default: "review"
+      default: 'review'
     },
     prix: Number
-  }
-  ],
+  }],
   ville: String,
   commune: String,
   lieu: String,
@@ -24,7 +23,7 @@ export const OrderSchema = new mongoose.Schema({
   note: String,
   statut: {
     type: String,
-    default: "uncomplete"
+    default: 'uncomplete'
   },
   client: {
     type: mongoose.Schema.Types.ObjectId,

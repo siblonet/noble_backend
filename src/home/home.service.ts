@@ -2,33 +2,18 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Article } from './entities/activity.entity';
+//import ArticleSchema from './path_to_article_schema'; // Adjust the import path
+//import { ArticleSchema } from './dto/create-activity.dto';
 
-function getFullDateAndTime(): string {
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-  const day = String(currentDate.getDate()).padStart(2, '0');
-  const hours = String(currentDate.getHours()).padStart(2, '0');
-  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
 @Injectable()
 export class ActivityService {
+  constructor(@InjectModel('Boutique') private boutiqueModel: Model<Article>) { }
 
-  constructor(
-    @InjectModel('Boutique') private boutiqueModel: Model<Article>) { }
-
-  async create(acrticle: Article) {
-    const articl = await this.boutiqueModel.create({
-      ...acrticle
-    });
-    await articl.save();
-    return 'done';
+  async create(article: Article): Promise<string> {
+    await this.boutiqueModel.create(article);
+    return 'Article created successfully';
   }
-
 
   async allArticles(): Promise<Article[]> {
     return await this.boutiqueModel.find();
