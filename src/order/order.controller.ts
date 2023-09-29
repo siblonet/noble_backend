@@ -34,8 +34,13 @@ export class OrderController {
   }
 
   @Delete('/:id')
-  removeArticle(@Param('id') id: string) {
-    return this.orderService.removeArticle(id);
+  removeOrders(@Param('id') id: string) {
+    return this.orderService.removeOrders(id);
+  }
+
+  @Delete('oarderar/:id/:ad')
+  removeOrdersArticl(@Param('id') id: string, @Param('ad') ad: string) {
+    return this.orderService.removeOrdersArticl(id, ad);
   }
 
 }

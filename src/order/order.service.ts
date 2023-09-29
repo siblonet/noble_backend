@@ -15,14 +15,14 @@ export class OrderService {
       ...acrticle
     });
     await articl.save();
-    return {done: 'done'};
+    return { done: 'done' };
   }
 
 
   async allArticles(): Promise<Order[]> {
     return await this.orderModel.find().populate('articles.arti_id').populate('client');
   }
-  
+
 
   async updateArticles(id: string, article: Order): Promise<any> {
     const admin = await this.orderModel.findByIdAndUpdate(id, article);
@@ -33,8 +33,23 @@ export class OrderService {
   }
 
 
-  async removeArticle(id: string) {
+  async removeOrders(id: string) {
     await this.orderModel.findByIdAndRemove(id);
+    return 'done';
+  };
+
+  async removeOrdersArticl(id: string, ad: string) {
+    await this.orderModel.findByIdAndUpdate(id,
+      {
+        $pull:
+        {
+          articles: {
+            _id: ad
+          }
+        }
+      },
+      {new: true}
+    );
     return 'done';
   }
 }
