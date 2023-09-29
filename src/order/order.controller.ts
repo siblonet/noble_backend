@@ -28,9 +28,16 @@ export class OrderController {
   }
 
 
-  @Put('/:id')
-  PersonUpte(@Param('id') id: string, @Body() activle: Order) {
-    return this.orderService.updateArticles(id, activle);
+  @Put('/:id/:od')
+  updateOrder(@Param('id') id: string, @Param('od') od: string, @Body() activle: Order) {
+    //console.log(id, od, activle);
+    return this.orderService.updateOrder(id, od, activle);
+  }
+
+  @Put('statoo/:id/:od')
+  updateOrderStatus(@Param('id') id: string, @Param('od') od: string, @Body() activle: Order) {
+    //console.log(id, od, activle);
+    return this.orderService.updateOrderStatus(id, od, activle);
   }
 
   @Delete('/:id')

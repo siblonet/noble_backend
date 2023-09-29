@@ -24,14 +24,49 @@ export class OrderService {
   }
 
 
-  async updateArticles(id: string, article: Order): Promise<any> {
-    const admin = await this.orderModel.findByIdAndUpdate(id, article);
+
+  async updateOrder(id: string, od: string, updatedArticle: any): Promise<any> {
+    const admin = await this.orderModel.findOneAndUpdate(
+      { _id: id, 'articles._id': od },
+      {
+        $set: {
+          'articles.$.quantcho': updatedArticle.quantcho,
+          'articles.$.image': updatedArticle.image,
+          'articles.$.color': updatedArticle.color,
+          'articles.$.size': updatedArticle.size,
+          ville: updatedArticle.ville,
+          commune: updatedArticle.commune,
+          lieu: updatedArticle.lieu,
+          phone: updatedArticle.phone,
+        },
+      },
+      { new: true }
+    );
+  
     if (!admin) {
-      throw new HttpException('article not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
+  
     return "done";
   }
 
+  async updateOrderStatus(id: string, od: string, updatedArticle: any): Promise<any> {
+    const admin = await this.orderModel.findOneAndUpdate(
+      { _id: id, 'articles._id': od },
+      {
+        $set: {
+          'articles.$.statut': updatedArticle.statut
+        },
+      },
+      { new: true }
+    );
+  
+    if (!admin) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+
+    return "done";
+  }
 
   async removeOrders(id: string) {
     await this.orderModel.findByIdAndRemove(id);
@@ -48,7 +83,7 @@ export class OrderService {
           }
         }
       },
-      {new: true}
+      { new: true }
     );
     return 'done';
   }
