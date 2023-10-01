@@ -27,6 +27,11 @@ export class OrderController {
     return await this.orderService.allArticles();
   }
 
+  @Get("myorder/:id")
+  async getmyOrders(@Param('id') id: string): Promise<Order[]> {
+    return await this.orderService.getmyOrders(id);
+  }
+
 
   @Put('/:id/:od')
   updateOrder(@Param('id') id: string, @Param('od') od: string, @Body() activle: Order) {

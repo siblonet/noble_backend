@@ -24,6 +24,9 @@ export class OrderService {
   }
 
 
+  async getmyOrders(id: string): Promise<Order[]> {
+    return await this.orderModel.find({client: id}).populate('articles.arti_id');
+  }
 
   async updateOrder(id: string, od: string, updatedArticle: any): Promise<any> {
     const admin = await this.orderModel.findOneAndUpdate(
