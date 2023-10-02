@@ -31,6 +31,5 @@ export class ActivityService {
 
   async removeArticle(id: string) {
     await this.boutiqueModel.findByIdAndRemove(id);
-    return 'done';
   }
 }
