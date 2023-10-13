@@ -1,21 +1,10 @@
-import { Controller, Get, Query, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { Article } from './entities/activity.entity';
 import { ActivityService } from './home.service';
-import axios from 'axios';
 import * as fs from 'fs';
+import { MineindService } from 'src/mineind/mineind.service';
 
 const credentialsPath = './cloudstore.json'; // Adjust the path accordingly
-
-const downloadCredentialsFile = async () => {
-  try {
-    const response = await axios.get('https://storage.googleapis.com/seeme-7a462.appspot.com/cloudstore.json');
-    fs.writeFileSync(credentialsPath, JSON.stringify(response.data));
-  } catch (error) {
-    throw new Error('Error downloading credentials file');
-  }
-};
-
-
 
 async function checkIfFileExists(filePath: string): Promise<boolean> {
   return new Promise<boolean>((resolve) => {
@@ -25,28 +14,29 @@ async function checkIfFileExists(filePath: string): Promise<boolean> {
   });
 }
 
-
 @Controller('boutique')
 export class ActivityController {
-  constructor(private activityService: ActivityService) { }
-
+  constructor(private activityService: ActivityService,
+    private readonly mineindService: MineindService) { }
 
   async checkFileExists(): Promise<{ exists: boolean }> {
     const exists = await checkIfFileExists(credentialsPath);
     return { exists };
   }
 
-
   @Post('uploadImage')
   async createImage(@Body() base64Data: any): Promise<{ ima: String }> {
-    const deer = await this.checkFileExists();
+    const exists = await checkIfFileExists(credentialsPath);
 
-    if (!deer.exists) {
-      downloadCredentialsFile();
-      return await this.activityService.createImageWithDelay(base64Data);
-    } else {
-      return await this.activityService.createImage(base64Data);
+    // Define the content you want to write to the credentials file
+
+
+    if (!exists) {
+      // Write the content to the credentials file if it doesn't exist
+      fs.writeFileSync(credentialsPath, this.mineindService.credentialReform());
     }
+
+    return await this.activityService.createImage(base64Data);
   }
 
 
