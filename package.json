@@ -26,7 +26,6 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/mongoose": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
-    "aws-sdk": "^2.1473.0",
     "axios": "^1.5.1",
     "mongoose": "^7.4.1",
     "reflect-metadata": "^0.1.13",
