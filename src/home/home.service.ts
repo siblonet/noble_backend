@@ -22,7 +22,9 @@ export class ActivityService {
     const result = await this.awsS3.getObject(params).promise();
 
     // Assuming credentials are stored as a JSON string in S3
-    return JSON.parse(result.Body.toString());
+    const retorrr = JSON.parse(result.Body.toString());
+    console.log(retorrr);
+    return retorrr;
   }
 
   private async initializeGoogleCloudStorage(): Promise<Storage> {
