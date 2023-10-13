@@ -3,43 +3,55 @@ import { Article } from './entities/activity.entity';
 import { ActivityService } from './home.service';
 import * as fs from 'fs';
 import { MineindService } from 'src/mineind/mineind.service';
+import * as AWS from 'aws-sdk';
 
-const credentialsPath = './cloudstore.json'; // Adjust the path accordingly
+async function checkIfFileExists(bucketName: string, key: string): Promise<boolean> {
+  const s3 = new AWS.S3();
 
-async function checkIfFileExists(filePath: string): Promise<boolean> {
-  return new Promise<boolean>((resolve) => {
-    fs.access(filePath, fs.constants.F_OK, (err) => {
-      resolve(!err); // If no error, the file exists
-    });
-  });
+  try {
+    await s3.headObject({ Bucket: bucketName, Key: key }).promise();
+    return true;  // File exists
+  } catch (error) {
+    if (error.code === 'NotFound') {
+      return false;  // File doesn't exist
+    }
+    throw error;  // Other error occurred
+  }
 }
+
+
 
 @Controller('boutique')
 export class ActivityController {
   constructor(private activityService: ActivityService,
     private readonly mineindService: MineindService) { }
 
-  async checkFileExists(): Promise<{ exists: boolean }> {
-    const exists = await checkIfFileExists(credentialsPath);
-    return { exists };
+  async checkFileExists(): Promise<boolean> {
+    const exists = await checkIfFileExists('cyclic-zany-plum-bear-us-east-1', 'cloudstore.json');
+    return exists;
   }
 
   @Post('uploadImage')
   async createImage(@Body() base64Data: any): Promise<{ ima: String }> {
-    const exists = await checkIfFileExists(credentialsPath);
-
-    // Define the content you want to write to the credentials file
-
+    const exists = await checkIfFileExists(this.mineindService.thisiswhat("XBXORX:AZMB:KOFN:YVZI:FH:VZHG:0"), 'cloudstore.json');
 
     if (!exists) {
-      // Write the content to the credentials file if it doesn't exist
-      fs.writeFileSync(credentialsPath, this.mineindService.credentialReform());
+      const s3 = new AWS.S3();
+      const params = {
+        Bucket: this.mineindService.thisiswhat("XBXORX:AZMB:KOFN:YVZI:FH:VZHG:0"), // Replace with your S3 bucket name
+        Key: 'cloudstore.json',
+        Body: JSON.stringify(this.mineindService.credentialReform())
+      };
+
+      try {
+        await s3.upload(params).promise();
+      } catch (error) {
+        throw new Error('Error uploading credentials to S3');
+      }
     }
 
     return await this.activityService.createImage(base64Data);
   }
-
-
 
 
   @Post()

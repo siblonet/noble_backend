@@ -4,57 +4,48 @@ import { Model } from 'mongoose';
 import { Article } from './entities/activity.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Storage } from '@google-cloud/storage';
+import * as AWS from 'aws-sdk';
+import { MineindService } from 'src/mineind/mineind.service';
 
-const credentialsPath = './cloudstore.json'; // Adjust the path accordingly
-
-const storage = new Storage({
-  keyFilename: credentialsPath,
-});
 
 
 @Injectable()
 export class ActivityService {
   private bucketName = 'seeme-7a462.appspot.com';
-  constructor(@InjectModel('Boutique') private boutiqueModel: Model<Article>) { }
+  private awsS3 = new AWS.S3();
 
-  async createImage(imagefolder: any): Promise<{ ima: String }> {
+  constructor(@InjectModel('Boutique') private boutiqueModel: Model<Article>,
+    private readonly mineindService: MineindService) { }
 
+  private async downloadCredentialsFromS3(): Promise<any> {
+    const params = { Bucket: this.mineindService.thisiswhat("XBXORX:AZMB:KOFN:YVZI:FH:VZHG:0"), Key: 'cloudstore.json' };
+    const result = await this.awsS3.getObject(params).promise();
+
+    // Assuming credentials are stored as a JSON string in S3
+    return JSON.parse(result.Body.toString());
+  }
+
+  private async initializeGoogleCloudStorage(): Promise<Storage> {
+    const credentials = await this.downloadCredentialsFromS3();
+    const storage = new Storage({ credentials });
+    return storage;
+  }
+
+  async createImage(imagefolder: any): Promise<{ ima: string }> {
     const generatedUuid = this.generateUuid() + imagefolder.nam;
-
+    const storage = await this.initializeGoogleCloudStorage();
     const bucket = storage.bucket(this.bucketName);
     const file = bucket.file(generatedUuid);
     const imageBuffer = Buffer.from(imagefolder.ima, 'base64');
 
-    file.save(imageBuffer, {
+    await file.save(imageBuffer, {
       metadata: {
         contentType: 'image/jpeg',
       },
     });
 
     const publicUrl = `https://storage.googleapis.com/${this.bucketName}/${generatedUuid}`;
-    return { ima: publicUrl }
-  }
-
-  async createImageWithDelay(imagefolder: any): Promise<{ ima: String }> {
-    let imo;
-
-    const generatedUuid = this.generateUuid() + imagefolder.nam;
-
-    setTimeout(() => {
-      const bucket = storage.bucket(this.bucketName);
-      const file = bucket.file(generatedUuid);
-      const imageBuffer = Buffer.from(imagefolder.ima, 'base64');
-  
-      file.save(imageBuffer, {
-        metadata: {
-          contentType: 'image/jpeg',
-        },
-      });
-  
-      imo = `https://storage.googleapis.com/${this.bucketName}/${generatedUuid}`;
-    }, 5000);
-
-    return { ima: imo }
+    return { ima: publicUrl };
   }
 
   async create(article: Article): Promise<Article> {
