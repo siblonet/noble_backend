@@ -2,18 +2,23 @@ import * as mongoose from 'mongoose';
 
 export const ArticleSchema = new mongoose.Schema({
   addarticle: { type: String },
-  addprixpro: { type: Number },
+  quantity: { type: Number },
+  addgenre: { type: String },
+  addtransage: { type: String },
   addprix: { type: Number },
+  addreduction: { type: Number },
+  addoccasion: { type: String },
   addfour: { type: String },
   adddispo: { type: String },
+  addnouveaute: { type: String },
   addcoul: { type: String },
   addtail: { type: String },
   addmateri: { type: String },
+  addmarque: { type: String },
   addtype: { type: String },
+  addtypepro: { type: String },
   addphone: { type: String },
-  quantity: { type: Number },
   addexpe: { type: String },
-  who: { type: String },
   notes: { type: String },
   image: [{ ima: { type: String } }],  // Corrected the type for 'ima'
   created: { type: Date, default: Date.now }
