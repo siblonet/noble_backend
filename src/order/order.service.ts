@@ -15,7 +15,36 @@ export class OrderService {
       ...acrticle
     });
     await articl.save();
+    await this.decreaseArticleQuantity(acrticle.articles);
     return { done: 'done' };
+  }
+
+  async decreaseArticleQuantity(articles: any[]) {
+    try {
+      for (const article of articles) {
+        await this.orderModel.findByIdAndUpdate(
+          article.arti_id,
+          { $inc: { quantity: -article.quantcho } },
+          { new: true }
+        );
+      }
+    } catch (error) {
+      throw new Error(`Failed to decrease article quantities: ${error.message}`);
+    }
+  }
+
+
+  async increaseArticleQuantity(id: string): Promise<any> {
+    try {
+      const result = await this.orderModel.findByIdAndUpdate(
+        id,
+        { $inc: { quantity: +1 } },
+        { new: true } // to get the updated document
+      );
+      return result;
+    } catch (error) {
+      throw new Error(`Failed to decrease article quantity: ${error.message}`);
+    }
   }
 
 
@@ -25,7 +54,7 @@ export class OrderService {
 
 
   async getmyOrders(id: string): Promise<Order[]> {
-    return await this.orderModel.find({client: id}).populate('articles.arti_id');
+    return await this.orderModel.find({ client: id }).populate('articles.arti_id');
   }
 
   async updateOrder(id: string, od: string, updatedArticle: any): Promise<any> {
@@ -45,11 +74,11 @@ export class OrderService {
       },
       { new: true }
     );
-  
+
     if (!admin) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
-  
+
     return "done";
   }
 
@@ -63,7 +92,7 @@ export class OrderService {
       },
       { new: true }
     );
-  
+
     if (!admin) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
