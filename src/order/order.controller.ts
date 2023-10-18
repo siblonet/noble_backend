@@ -45,9 +45,9 @@ export class OrderController {
     return this.orderService.updateOrderStatus(id, od, activle);
   }
 
-  @Delete('/:id')
-  removeOrders(@Param('id') id: string) {
-    return this.orderService.removeOrders(id);
+  @Delete('/:id/:artid/:quant')
+  removeOrders(@Param('id') id: string, @Param('artid') artid: string, @Param('quant') quant: Number) {
+    return this.orderService.removeOrders(id, artid, quant);
   }
 
   @Delete('oarderar/:id/:ad/:artid/:quant')

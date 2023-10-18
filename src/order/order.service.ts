@@ -34,7 +34,7 @@ export class OrderService {
       throw new Error(`Failed to decrease article quantities: ${error.message}`);
     }
   }
-  
+
   async increaseArticleQuantity(id: string, quan: Number): Promise<any> {
     try {
       const result = await this.orderModel.findByIdAndUpdate(
@@ -101,8 +101,9 @@ export class OrderService {
     return "done";
   }
 
-  async removeOrders(id: string) {
+  async removeOrders(id: string, artid: string, quan: Number) {
     await this.orderModel.findByIdAndRemove(id);
+    this.increaseArticleQuantity(artid, quan);
     return 'done';
   };
 
