@@ -10,7 +10,7 @@ export class OrderService {
 
   constructor(
     @InjectModel('Order') private orderModel: Model<Order>,
-    @InjectModel('Boutique') private boutiqueModel: Model<Article>) { }
+    @InjectModel('NobleCoil') private boutiqueModel: Model<Article>) { }
 
   async create(acrticle: Order) {
     const articl = await this.orderModel.create({

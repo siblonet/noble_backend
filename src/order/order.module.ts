@@ -10,7 +10,7 @@ import { PersonSchema } from 'src/people/dto/create-person.dto';
   imports: [
     MongooseModule.forFeature([
       { name: 'Order', schema: OrderSchema },
-      { name: 'Boutique', schema: ArticleSchema },
+      { name: 'NobleCoil', schema: ArticleSchema },
       { name: 'People', schema: PersonSchema }
     ])
   ],
