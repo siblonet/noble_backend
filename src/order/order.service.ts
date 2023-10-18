@@ -35,8 +35,6 @@ export class OrderService {
     }
   }
   
-
-
   async increaseArticleQuantity(id: string): Promise<any> {
     try {
       const result = await this.orderModel.findByIdAndUpdate(
