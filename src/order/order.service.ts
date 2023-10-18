@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Article } from 'src/home/entities/activity.entity';
 import { Order } from './entities/order.entity';
 
 
@@ -8,7 +9,8 @@ import { Order } from './entities/order.entity';
 export class OrderService {
 
   constructor(
-    @InjectModel('Order') private orderModel: Model<Order>) { }
+    @InjectModel('Order') private orderModel: Model<Order>,
+    @InjectModel('Boutique') private boutiqueModel: Model<Article>) { }
 
   async create(acrticle: Order) {
     const articl = await this.orderModel.create({
@@ -22,7 +24,7 @@ export class OrderService {
   async decreaseArticleQuantity(articles: any[]) {
     try {
       for (const article of articles) {
-        await this.orderModel.findByIdAndUpdate(
+        await this.boutiqueModel.findByIdAndUpdate(
           article.arti_id,
           { $inc: { quantity: -article.quantcho } },
           { new: true }
@@ -32,6 +34,7 @@ export class OrderService {
       throw new Error(`Failed to decrease article quantities: ${error.message}`);
     }
   }
+  
 
 
   async increaseArticleQuantity(id: string): Promise<any> {
