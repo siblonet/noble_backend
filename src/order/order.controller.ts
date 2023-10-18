@@ -50,9 +50,9 @@ export class OrderController {
     return this.orderService.removeOrders(id);
   }
 
-  @Delete('oarderar/:id/:ad')
-  removeOrdersArticl(@Param('id') id: string, @Param('ad') ad: string) {
-    return this.orderService.removeOrdersArticl(id, ad);
+  @Delete('oarderar/:id/:ad/:artid/:quant')
+  removeOrdersArticl(@Param('id') id: string, @Param('ad') ad: string, @Param('artid') artid: string, @Param('quant') quant: Number) {
+    return this.orderService.removeOrdersArticl(id, ad, artid, quant);
   }
 
 }

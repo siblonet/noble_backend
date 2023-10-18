@@ -35,11 +35,11 @@ export class OrderService {
     }
   }
   
-  async increaseArticleQuantity(id: string): Promise<any> {
+  async increaseArticleQuantity(id: string, quan: Number): Promise<any> {
     try {
       const result = await this.orderModel.findByIdAndUpdate(
         id,
-        { $inc: { quantity: +1 } },
+        { $inc: { quantity: +quan } },
         { new: true } // to get the updated document
       );
       return result;
@@ -106,7 +106,7 @@ export class OrderService {
     return 'done';
   };
 
-  async removeOrdersArticl(id: string, ad: string) {
+  async removeOrdersArticl(id: string, ad: string, artid: string, quan: Number) {
     await this.orderModel.findByIdAndUpdate(id,
       {
         $pull:
@@ -118,6 +118,9 @@ export class OrderService {
       },
       { new: true }
     );
-    return 'done';
+
+    this.increaseArticleQuantity(artid, quan);
+    return "done";
+
   }
 }
