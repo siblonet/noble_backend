@@ -10,6 +10,6 @@ export interface PLog {
     phone: string;
     email: string;
     motdepass: string;
-    admin?: boolean;
+    admin?: string;
     commade?: string;
   }

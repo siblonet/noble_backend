@@ -23,6 +23,10 @@ export class PeopleController {
     return this.peopleService.PersonUpte(id, persona);
   }
 
+  @Put('status/:id')
+  PersonStatus(@Param('id') id: string, @Body() status: any) {
+    return this.peopleService.PersonUpte(id, status);
+  }
 
   @Put('passwordupdate/:id')
   Passwordupdate(@Param('id') id: string, @Body() passwor: any) {
@@ -30,17 +34,11 @@ export class PeopleController {
   }
 
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePersonDto: Person) {
-    return this.peopleService.update(+id, updatePersonDto);
-  }
-
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.peopleService.remove(+id);
+    return this.peopleService.remove(id);
   }
-
 
   @Get("persons")
   async allPersons(): Promise<Person[]> {

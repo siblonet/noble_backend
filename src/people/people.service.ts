@@ -24,7 +24,7 @@ export class PeopleService {
         phone: persondto.phone,
         email: persondto.email,
         motdepass: this.indrog(persondto.motdepass),
-        admin: true
+        admin: "true"
       };
 
       const person = await this.personModel.create({
@@ -39,7 +39,7 @@ export class PeopleService {
         phone: persondto.phone,
         email: persondto.email,
         motdepass: this.indrog(persondto.motdepass),
-        admin: false
+        admin: "false"
       };
 
       const person = await this.personModel.create({
@@ -109,15 +109,22 @@ export class PeopleService {
 
   }
 
+  async PersonStatus(id: any, status: any): Promise<any> {
+    const admin = await this.personModel.findByIdAndUpdate(id, status);
+    if (!admin) {
+      throw new HttpException('femmes not found', HttpStatus.NOT_FOUND);
+    }
+    return "ok";
+
+  }
 
   async Passwordupdate(id: any, persan: any): Promise<any> {
     const { oldpassword, motdepass } = persan;
 
     const passwd = await this.personModel.findById(id)
-    //One({ password: this.indrog(oldpassword) })
     if (!passwd) {
       return { wrong: "wrong" };
-    } else if (this.enderog(motdepass, passwd.motdepass)) {
+    } else if (this.enderog(oldpassword, passwd.motdepass)) {
       await this.personModel.findByIdAndUpdate(id, { password: this.indrog(motdepass) });
       return { wrong: "ok" };
 
@@ -125,18 +132,12 @@ export class PeopleService {
 
   }
 
-
-  update(id: number, persondto: Person) {
-    return `This action updates a #${id} person`;
+  remove(id: string) {
+    return this.personModel.findByIdAndRemove(id);
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} person`;
-  }
-
 
   async allPerson(): Promise<Person[]> {
-    return await this.personModel.find({admin: false});
+    return await this.personModel.find();
 
   }
 }

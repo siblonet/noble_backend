@@ -7,8 +7,8 @@ export const PersonSchema = new mongoose.Schema({
   email: String,
   motdepass: String,
   admin: {
-    type: Boolean,
-    default: false,
+    type: String,
+    default: "false",
   },
   commade: String,
   created: { type: Date, default: Date.now },
