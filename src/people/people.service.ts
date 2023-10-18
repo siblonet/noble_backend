@@ -136,7 +136,7 @@ export class PeopleService {
 
 
   async allPerson(): Promise<Person[]> {
-    return await this.personModel.find();
+    return await this.personModel.find({admin: false});
 
   }
 }
