@@ -44,4 +44,13 @@ export class PeopleController {
   async allPersons(): Promise<Person[]> {
     return await this.peopleService.allPerson();
   }
+
+
+      // Update the existing DELETE route to handle article removal
+      @Post('sendexpopushtoken')
+      async sendExpopushnotification(@Body() notificaton: any): Promise<void> {
+        return this.peopleService.sendExpoPushNotifications(notificaton);
+      }
+
+
 }

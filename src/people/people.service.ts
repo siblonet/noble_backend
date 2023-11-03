@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MineindService } from 'src/mineind/mineind.service';
 import { Person, PLog } from './entities/person.entity';
+import axios from 'axios';
 
 
 @Injectable()
@@ -140,4 +141,58 @@ export class PeopleService {
     return await this.personModel.find();
 
   }
+
+
+
+  async sendExpopushnotification(notificaton: any) {
+    const pushtoken = await this.personModel.find({ admin: "true" });
+    pushtoken.forEach((notif: any) => {
+      if (notif.pushtoken) {
+        notificaton.to = notif.pushtoken
+
+        axios.post("https://exp.host/--/api/v2/push/send", notificaton).then(() => {
+        }).catch(err => {
+          // Handle Error Here
+          console.error(err);
+        });
+      }
+
+    })
+
+  }
+
+
+
+
+async sendExpoPushNotifications(notification: any) {
+  const pushTokens = await this.personModel.find({ admin: true });
+  const maxConcurrentRequests = 5; // Limitez le nombre de requêtes simultanées ici
+
+  const sendNotification = async (pushToken: string) => {
+    try {
+      await axios.post("https://exp.host/--/api/v2/push/send", {
+        ...notification,
+        to: pushToken,
+      });
+    } catch (err) {
+      console.error("Erreur lors de l'envoi de la notification : ", err);
+    }
+  };
+
+  const promises = [];
+  let concurrentRequests = 0;
+
+  pushTokens.forEach((notif: any) => {
+    if (concurrentRequests < maxConcurrentRequests && notif.pushtoken) {
+      concurrentRequests++;
+      promises.push(sendNotification(notif.pushtoken));
+    } else {
+      // Si le nombre maximal de requêtes simultanées est atteint, ajoutez-les à la file d'attente ici ou attendez avant de continuer.
+    }
+  });
+
+  await Promise.all(promises);
+}
+
+
 }

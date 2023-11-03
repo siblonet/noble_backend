@@ -10,6 +10,7 @@ export const PersonSchema = new mongoose.Schema({
     type: String,
     default: "false",
   },
+  pushtoken: String,
   commade: String,
   created: { type: Date, default: Date.now },
 });
