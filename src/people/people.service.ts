@@ -102,7 +102,12 @@ export class PeopleService {
   }
 
   async PersonUpte(id: any, persan: Person): Promise<any> {
-    const admin = await this.personModel.findByIdAndUpdate(id, persan);
+    const admin = await this.personModel.findByIdAndUpdate(id, {
+      nom: persan.nom,
+      prenom: persan.prenom,
+      email: persan.email,
+      phone: persan.phone
+    });
     if (!admin) {
       throw new HttpException('femmes not found', HttpStatus.NOT_FOUND);
     }
@@ -122,12 +127,15 @@ export class PeopleService {
   async Passwordupdate(id: any, persan: any): Promise<any> {
     const { oldpassword, motdepass } = persan;
 
-    const passwd = await this.personModel.findById(id)
+    const passwd = await this.personModel.findById(id);
     if (!passwd) {
       return { wrong: "wrong" };
     } else if (this.enderog(oldpassword, passwd.motdepass)) {
-      await this.personModel.findByIdAndUpdate(id, { password: this.indrog(motdepass) });
+      await this.personModel.findByIdAndUpdate(id, { motdepass: this.indrog(motdepass) });
+
       return { wrong: "ok" };
+    }else{
+      return { wrong: "wrong" };
 
     }
 
