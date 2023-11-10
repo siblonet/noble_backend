@@ -72,7 +72,7 @@ export class PeopleService {
     const perset = `${_id}°${prenom}°${nom}°${phone}°${email}°${admin}`;
     const dae = this.mineindService.whatisthis(perset);
     const adaa = dae.replaceAll("undefined", "");
-    const doa = { token: adaa, id: _id };
+    const doa = { token: adaa };
     return doa;
   }
 
@@ -133,6 +133,20 @@ export class PeopleService {
 
   }
 
+
+  async Pushtoken(id: any, pushtoken: any): Promise<any> {
+
+    const use = await this.personModel.findById(id)
+    if (!use) {
+      return { wrong: "wrong" };
+    } else {
+      await this.personModel.findByIdAndUpdate(id, { pushtoken: pushtoken.notif });
+      return { wrong: "ok" };
+    }
+
+  }
+
+
   remove(id: string) {
     return this.personModel.findByIdAndRemove(id);
   }
@@ -149,12 +163,16 @@ export class PeopleService {
     pushtoken.forEach((notif: any) => {
       if (notif.pushtoken) {
         notificaton.to = notif.pushtoken
+        try {
+          axios.post("https://exp.host/--/api/v2/push/send", notificaton).then(() => {
+          }).catch(err => {
+            // Handle Error Here
+            console.error(err);
+          });
+        } catch (error) {
+          null
+        }
 
-        axios.post("https://exp.host/--/api/v2/push/send", notificaton).then(() => {
-        }).catch(err => {
-          // Handle Error Here
-          console.error(err);
-        });
       }
 
     })
@@ -162,37 +180,35 @@ export class PeopleService {
   }
 
 
+  async sendExpoPushNotifications(notification: any) {
+    const pushTokens = await this.personModel.find({ admin: true, pushtoken: { $ne: "denied" } });
+    const maxConcurrentRequests = 5; // Limitez le nombre de requêtes simultanées ici
 
+    const sendNotification = async (pushToken: string) => {
+      try {
+        console.log("sending...");
+        await axios.post("https://exp.host/--/api/v2/push/send", {
+          ...notification,
+          to: pushToken,
+        });
+      } catch (err) {
+        console.error("Erreur lors de l'envoi de la notification : ");
+      }
+    };
 
-async sendExpoPushNotifications(notification: any) {
-  const pushTokens = await this.personModel.find({ admin: true });
-  const maxConcurrentRequests = 5; // Limitez le nombre de requêtes simultanées ici
+    const promises = [];
+    let concurrentRequests = 0;
 
-  const sendNotification = async (pushToken: string) => {
-    try {
-      await axios.post("https://exp.host/--/api/v2/push/send", {
-        ...notification,
-        to: pushToken,
-      });
-    } catch (err) {
-      console.error("Erreur lors de l'envoi de la notification : ", err);
-    }
-  };
-
-  const promises = [];
-  let concurrentRequests = 0;
-
-  pushTokens.forEach((notif: any) => {
-    if (concurrentRequests < maxConcurrentRequests && notif.pushtoken) {
-      concurrentRequests++;
-      promises.push(sendNotification(notif.pushtoken));
-    } else {
-      // Si le nombre maximal de requêtes simultanées est atteint, ajoutez-les à la file d'attente ici ou attendez avant de continuer.
-    }
-  });
-
-  await Promise.all(promises);
-}
+    pushTokens.forEach((notif: any) => {
+      if (concurrentRequests < maxConcurrentRequests && notif.pushtoken) {
+        concurrentRequests++;
+        promises.push(sendNotification(notif.pushtoken));
+      } else {
+        // Si le nombre maximal de requêtes simultanées est atteint, ajoutez-les à la file d'attente ici ou attendez avant de continuer.
+      }
+    });
+    await Promise.all(promises);
+  }
 
 
 }

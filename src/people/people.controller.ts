@@ -33,7 +33,10 @@ export class PeopleController {
     return this.peopleService.Passwordupdate(id, passwor);
   }
 
-
+  @Put('pushtoken/:id')
+  Pushtoken(@Param('id') id: string, @Body() pushtoken: any) {
+    return this.peopleService.Pushtoken(id, pushtoken);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

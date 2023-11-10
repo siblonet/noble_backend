@@ -2,7 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Article } from 'src/home/entities/activity.entity';
+import { PeopleService } from 'src/people/people.service';
 import { Order } from './entities/order.entity';
+import axios from 'axios';
 
 
 @Injectable()
@@ -10,7 +12,8 @@ export class OrderService {
 
   constructor(
     @InjectModel('Order') private orderModel: Model<Order>,
-    @InjectModel('NobleCoil') private boutiqueModel: Model<Article>) { }
+    @InjectModel('NobleCoil') private boutiqueModel: Model<Article>,
+    private readonly peopleService: PeopleService) { }
 
   async create(acrticle: Order) {
     const articl = await this.orderModel.create({
@@ -18,6 +21,17 @@ export class OrderService {
     });
     await articl.save();
     await this.decreaseArticleQuantity(acrticle.articles);
+
+    const dato = {
+      "sound": "default",
+      "title": `Une commands de ${acrticle.articles.length} articles`,
+      "body": `${acrticle.articles[0].prix*acrticle.articles[0].quantcho} F`,
+    }
+    await this.peopleService.sendExpoPushNotifications(dato);
+
+    axios.post("http://localhost:3000/live" /*"http://localhost:3000 https://liveshopping.adaptable.app/live*/, dato).then().catch(err => {
+      console.error(err);
+  });
     return { done: 'done' };
   }
 

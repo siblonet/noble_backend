@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { OrderSchema } from './dto/create-order.dto';
 import { ArticleSchema } from 'src/home/dto/create-activity.dto';
 import { PersonSchema } from 'src/people/dto/create-person.dto';
+import { PeopleService } from 'src/people/people.service';
+import { MineindService } from 'src/mineind/mineind.service';
 
 @Module({
   imports: [
@@ -16,6 +18,6 @@ import { PersonSchema } from 'src/people/dto/create-person.dto';
   ],
 
   controllers: [OrderController],
-  providers: [OrderService]
+  providers: [OrderService, PeopleService, MineindService]
 })
 export class OrderModule { }
