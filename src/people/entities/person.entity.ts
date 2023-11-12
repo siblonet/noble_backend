@@ -8,6 +8,7 @@ export interface PLog {
     prenom: string;
     nom: string;
     phone: string;
+    owner: string;
     email: string;
     motdepass: string;
     admin?: string;

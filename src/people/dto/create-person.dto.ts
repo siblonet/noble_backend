@@ -6,6 +6,7 @@ export const PersonSchema = new mongoose.Schema({
   phone: String,
   email: String,
   motdepass: String,
+  owner: String,
   admin: {
     type: String,
     default: "false",

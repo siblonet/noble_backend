@@ -19,6 +19,7 @@ export interface Order extends Document {
     lieu: string;
     phone: string;
     note: string;
+    owner: string;
     statut: string;
     client: Person;
     created?: Date;

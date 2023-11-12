@@ -24,6 +24,7 @@ export class PeopleService {
         nom: persondto.nom,
         phone: persondto.phone,
         email: persondto.email,
+        owner: persondto.owner,
         motdepass: this.indrog(persondto.motdepass),
         admin: "true"
       };
@@ -39,6 +40,7 @@ export class PeopleService {
         nom: persondto.nom,
         phone: persondto.phone,
         email: persondto.email,
+        owner: persondto.owner,
         motdepass: this.indrog(persondto.motdepass),
         admin: "false"
       };
@@ -134,7 +136,7 @@ export class PeopleService {
       await this.personModel.findByIdAndUpdate(id, { motdepass: this.indrog(motdepass) });
 
       return { wrong: "ok" };
-    }else{
+    } else {
       return { wrong: "wrong" };
 
     }
@@ -159,8 +161,8 @@ export class PeopleService {
     return this.personModel.findByIdAndRemove(id);
   }
 
-  async allPerson(): Promise<Person[]> {
-    return await this.personModel.find();
+  async allPerson(id: String): Promise<Person[]> {
+    return await this.personModel.find({ owner: id });
 
   }
 
@@ -188,8 +190,8 @@ export class PeopleService {
   }
 
 
-  async sendExpoPushNotifications(notification: any) {
-    const pushTokens = await this.personModel.find({ admin: true, pushtoken: { $ne: "denied" } });
+  async sendExpoPushNotifications(notification: any, owner: any) {
+    const pushTokens = await this.personModel.find({ admin: true, owner: owner, pushtoken: { $ne: "denied" } });
     const maxConcurrentRequests = 5; // Limitez le nombre de requêtes simultanées ici
 
     const sendNotification = async (pushToken: string) => {

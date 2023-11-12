@@ -15,7 +15,10 @@ export class OrderService {
     @InjectModel('NobleCoil') private boutiqueModel: Model<Article>,
     private readonly peopleService: PeopleService) { }
 
-  async create(acrticle: Order) {
+
+
+
+  async create(acrticle: Order, owner: String) {
     const articl = await this.orderModel.create({
       ...acrticle
     });
@@ -25,15 +28,22 @@ export class OrderService {
     const dato = {
       "sound": "default",
       "title": `Une commands de ${acrticle.articles.length} articles`,
-      "body": `${acrticle.articles[0].prix*acrticle.articles[0].quantcho} F`,
+      "body": `${acrticle.articles[0].prix * acrticle.articles[0].quantcho} F`,
     }
-    await this.peopleService.sendExpoPushNotifications(dato);
+    await this.peopleService.sendExpoPushNotifications(dato, owner);
 
-    axios.post("http://localhost:3000/live" /*"http://localhost:3000 https://liveshopping.adaptable.app/live*/, dato).then().catch(err => {
+    const urlo = `http://localhost:3000/live/${owner}`;
+    const urpu = `https://liveshopping.adaptable.app/live/${owner}`;
+
+    axios.post(urpu, dato).then().catch(err => {
       console.error(err);
-  });
+    });
     return { done: 'done' };
   }
+
+
+
+
 
   async decreaseArticleQuantity(articles: any[]) {
     try {
@@ -63,8 +73,8 @@ export class OrderService {
   }
 
 
-  async allArticles(): Promise<Order[]> {
-    return await this.orderModel.find().populate('articles.arti_id').populate('client');
+  async allArticles(owner: String): Promise<Order[]> {
+    return await this.orderModel.find({ owner: owner }).populate('articles.arti_id').populate('client');
   }
 
 

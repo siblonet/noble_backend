@@ -20,6 +20,7 @@ export const ArticleSchema = new mongoose.Schema({
   addphone: { type: String },
   addexpe: { type: String },
   notes: { type: String },
+  owner: { type: String },
   image: [{ ima: { type: String } }],  // Corrected the type for 'ima'
   created: { type: Date, default: Date.now }
 });

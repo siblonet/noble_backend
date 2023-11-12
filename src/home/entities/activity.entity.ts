@@ -20,6 +20,7 @@ export interface Article extends Document {
   addphone: string;
   addexpe: string;
   notes: string;
+  owner: string;
   image: [{ ima: string }];
   created?: Date;
 }

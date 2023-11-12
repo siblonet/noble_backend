@@ -15,15 +15,15 @@ import { Order } from './entities/order.entity';
 export class OrderController {
   constructor(private orderService: OrderService) { }
 
-  @Post()
+  @Post("/:owner")
   //@UseGuards(AuthGuard('jwt'), AdminGuard)
-  create(@Body() article: Order) {
-    return this.orderService.create(article);
+  create(@Param('owner') owner: String, @Body() article: Order) {
+    return this.orderService.create(article, owner);
   }
 
-  @Get()
-  async allArticles(): Promise<Order[]> {
-    return await this.orderService.allArticles();
+  @Get("/:owner")
+  async allArticles(@Param('owner') owner: string): Promise<Order[]> {
+    return await this.orderService.allArticles(owner);
   }
 
   @Get("myorder/:id")

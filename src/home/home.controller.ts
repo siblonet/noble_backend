@@ -16,17 +16,18 @@ export class ActivityController {
   async create(@Body() article: Article) {
     return await this.activityService.create(article);
 
-  }
+  };
 
-  @Get()
-  async allArticles(): Promise<Article[]> {
-    return await this.activityService.allArticles();
-  }
+  @Get('/:owner')
+  async allArticles(@Param('owner') owner: string): Promise<Article[]> {
+    return await this.activityService.allArticles(owner);
+  };
+
   // Update the existing PUT route to handle article update
   @Put('/:id')
   async updateArticle(@Param('id') id: string, @Body() article: Article): Promise<Article> {
     return this.activityService.updateArticles(id, article);
-  }
+  };
 
   // Update the existing DELETE route to handle article removal
   @Delete('/:id')

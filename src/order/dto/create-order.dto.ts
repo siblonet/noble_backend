@@ -21,6 +21,7 @@ export const OrderSchema = new mongoose.Schema({
   lieu: String,
   phone: String,
   note: String,
+  owner: String,
   statut: {
     type: String,
     default: 'uncomplete'
