@@ -11,9 +11,9 @@ export class PeopleController {
     return this.peopleService.create(person);
   }
 
-  @Post('login')
-  async login(@Body() pLog: PLog) {
-    const user = await this.peopleService.login(pLog);
+  @Post('login/:owner')
+  async login(@Param('owner') owner: string, @Body() pLog: PLog) {
+    const user = await this.peopleService.login(pLog, owner);
 
     return user
   }

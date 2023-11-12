@@ -14,8 +14,8 @@ export class PeopleService {
 
 
   async create(persondto: Person) {
-    const { phone, nom } = persondto;
-    const user = await this.personModel.findOne({ phone });
+    const { phone, nom, owner } = persondto;
+    const user = await this.personModel.findOne({ phone, owner});
     if (user) {
       return { ee: "phoneused" }
     } else if (nom === "Lanell") {
@@ -79,9 +79,9 @@ export class PeopleService {
   }
 
 
-  async login(pLog: PLog) {
+  async login(pLog: PLog, owner: string) {
     const { phone, motdepass } = pLog;
-    const person = await this.personModel.findOne({ phone })
+    const person = await this.personModel.findOne({ phone, owner })
     if (!person) {
       return { ee: "Invalid" }
     } else if (this.enderog(motdepass, person.motdepass)) {
