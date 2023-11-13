@@ -166,7 +166,10 @@ export class PeopleService {
 
   }
 
+  async allNonadmin(id: String): Promise<Person[]> {
+    return await this.personModel.find({ owner: id, admin: "false" });
 
+  }
 
   async sendExpopushnotification(notificaton: any) {
     const pushtoken = await this.personModel.find({ admin: "true" });

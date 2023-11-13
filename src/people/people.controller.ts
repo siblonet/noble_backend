@@ -43,11 +43,15 @@ export class PeopleController {
     return this.peopleService.remove(id);
   }
 
+  @Get("nonadmin/:id")
+  async allNonadmin(@Param('id') id: string): Promise<Person[]> {
+    return await this.peopleService.allNonadmin(id);
+  }
+
   @Get("persons/:id")
   async allPersons(@Param('id') id: string): Promise<Person[]> {
     return await this.peopleService.allPerson(id);
   }
-
 
   // Update the existing DELETE route to handle article removal
   @Post('sendexpopushtoken/:id')
