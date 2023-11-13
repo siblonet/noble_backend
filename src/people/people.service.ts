@@ -161,13 +161,13 @@ export class PeopleService {
     return this.personModel.findByIdAndRemove(id);
   }
 
-  async allPerson(id: String): Promise<Person[]> {
-    return await this.personModel.find({ owner: id });
+  async allPerson(owner: string): Promise<Person[]> {
+    return await this.personModel.find({ owner: owner });
 
   }
 
-  async allNonadmin(id: String): Promise<Person[]> {
-    return await this.personModel.find({ owner: id, admin: "false" });
+  async allNonadmin(owner: string): Promise<Person[]> {
+    return await this.personModel.find({ owner: owner, admin: "false" });
 
   }
 

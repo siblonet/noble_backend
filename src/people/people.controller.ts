@@ -43,20 +43,20 @@ export class PeopleController {
     return this.peopleService.remove(id);
   }
 
-  @Get("nonadmin/:id")
-  async allNonadmin(@Param('id') id: string): Promise<Person[]> {
-    return await this.peopleService.allNonadmin(id);
+  @Get("nonadmin/:owner")
+  async allNonadmin(@Param('owner') owner: string): Promise<Person[]> {
+    return await this.peopleService.allNonadmin(owner);
   }
 
-  @Get("persons/:id")
-  async allPersons(@Param('id') id: string): Promise<Person[]> {
-    return await this.peopleService.allPerson(id);
+  @Get("persons/:owner")
+  async allPersons(@Param('owner') owner: string): Promise<Person[]> {
+    return await this.peopleService.allPerson(owner);
   }
 
   // Update the existing DELETE route to handle article removal
-  @Post('sendexpopushtoken/:id')
-  async sendExpopushnotification(@Param() id: String, @Body() notificaton: any): Promise<void> {
-    return this.peopleService.sendExpoPushNotifications(notificaton, id);
+  @Post('sendexpopushtoken/:owner')
+  async sendExpopushnotification(@Param('owner') owner: string, @Body() notificaton: any): Promise<void> {
+    return this.peopleService.sendExpoPushNotifications(notificaton, owner);
   }
 
 
