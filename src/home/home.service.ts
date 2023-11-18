@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Article } from './entities/activity.entity';
+import { Annonce, Article } from './entities/activity.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Storage } from '@google-cloud/storage';
 import { MineindService } from 'src/mineind/mineind.service';
@@ -12,6 +12,7 @@ export class ActivityService {
 
   constructor(
     @InjectModel('NobleCoil') private boutiqueModel: Model<Article>,
+    @InjectModel('Annonce') private annonceModel: Model<Annonce>,
     private readonly mineindService: MineindService) { }
 
   private async initializeGoogleCloudStorage(): Promise<Storage> {
@@ -48,6 +49,47 @@ export class ActivityService {
     return { ima: publicUrl };
   }
 
+
+
+  async createFile(fileData: any, owner: any, id: any): Promise<{ url: string }> {
+    const generatedUuid = this.generateUuid() + fileData.nam; // Assuming 'nam' is the file name
+    const storage = await this.initializeGoogleCloudStorage();
+    const bucket = storage.bucket(this.bucketName);
+    const file = bucket.file(generatedUuid);
+    const fileBuffer = Buffer.from(fileData.ima, 'base64');
+
+    const contentType = fileData.contentType || 'application/octet-stream'; // Default to binary if contentType is not provided
+
+    await file.save(fileBuffer, {
+      metadata: {
+        contentType: contentType,
+      },
+    });
+
+    const publicUrl = `https://storage.googleapis.com/${this.bucketName}/${generatedUuid}`;
+    try {
+      const anonce = await this.annonceModel.findByIdAndUpdate(id, { image: publicUrl });
+      if (!anonce) {
+        await this.annonceModel.create({
+          which: fileData.which,
+          owner: owner,
+          image: publicUrl
+        });
+      }
+    } catch (error) {
+      console.log(error.value);
+      await this.annonceModel.create({
+        which: fileData.which,
+        owner: owner,
+        image: publicUrl
+      });
+
+    }
+
+    return { url: publicUrl };
+  }
+
+
   async create(article: Article): Promise<Article> {
     return await this.boutiqueModel.create(article);
   }
@@ -58,6 +100,10 @@ export class ActivityService {
 
   async allArticles(owner: String): Promise<Article[]> {
     return await this.boutiqueModel.find({ owner: owner });
+  }
+
+  async allAnonnces(owner: String): Promise<Annonce[]> {
+    return await this.annonceModel.find({ owner: owner });
   }
 
   async updateArticles(id: string, article: Article): Promise<any> {

@@ -23,4 +23,12 @@ export interface Article extends Document {
   owner: string;
   image: [{ ima: string }];
   created?: Date;
-}
+};
+
+export interface Annonce extends Document {
+  which: string;
+  owner: string;
+  image: string;
+  created?: Date;
+};
+

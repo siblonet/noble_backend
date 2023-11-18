@@ -26,3 +26,11 @@ export const ArticleSchema = new mongoose.Schema({
 });
 
 //export default mongoose.model('Article', ArticleSchema);
+
+
+export const AnnonceSchema = new mongoose.Schema({
+  which: { type: String },
+  owner: { type: String },
+  image: { type: String },  // Corrected the type for 'ima'
+  created: { type: Date, default: Date.now }
+});
