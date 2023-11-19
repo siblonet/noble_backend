@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(bodyParser.json({limit: '1000mb'}));
+  app.use(bodyParser.json({limit: '9000mb'}));
   const options = {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
