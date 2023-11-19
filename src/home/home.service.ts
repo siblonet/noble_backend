@@ -72,7 +72,6 @@ export class ActivityService {
       if (!anonce) {
         await this.annonceModel.create({
           which: fileData.which,
-          mediascreen: fileData.mediascreen,
           owner: owner,
           image: publicUrl
         });
@@ -81,7 +80,6 @@ export class ActivityService {
       console.log(error.value);
       await this.annonceModel.create({
         which: fileData.which,
-        mediascreen: fileData.mediascreen,
         owner: owner,
         image: publicUrl
       });

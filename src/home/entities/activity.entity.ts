@@ -27,7 +27,6 @@ export interface Article extends Document {
 
 export interface Annonce extends Document {
   which: string;
-  mediascreen: string;
   owner: string;
   image: string;
   created?: Date;
