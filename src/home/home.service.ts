@@ -5,6 +5,7 @@ import { Annonce, Article } from './entities/activity.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Storage } from '@google-cloud/storage';
 import { MineindService } from 'src/mineind/mineind.service';
+import { Order } from 'src/order/entities/order.entity';
 
 @Injectable()
 export class ActivityService {
@@ -13,6 +14,7 @@ export class ActivityService {
   constructor(
     @InjectModel('NobleCoil') private boutiqueModel: Model<Article>,
     @InjectModel('Annonce') private annonceModel: Model<Annonce>,
+    @InjectModel('Order') private orderModel: Model<Order>,
     private readonly mineindService: MineindService) { }
 
   private async initializeGoogleCloudStorage(): Promise<Storage> {
@@ -98,8 +100,11 @@ export class ActivityService {
     return uuidv4();
   }
 
-  async allArticles(owner: String): Promise<Article[]> {
-    return await this.boutiqueModel.find({ owner: owner });
+  async allArticles(owner: String): Promise<any> {
+    const pagesetting = await this.annonceModel.find({ owner: owner });
+    const article = await this.boutiqueModel.find({ owner: owner });
+    const order = await this.orderModel.find({ owner: owner }).populate('articles.arti_id').populate('client');
+    return { article: article, pagesetting: pagesetting, order: order}
   }
 
   async allAnonnces(owner: String): Promise<Annonce[]> {

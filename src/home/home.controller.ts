@@ -23,7 +23,7 @@ export class ActivityController {
   };
 
   @Get('/:owner')
-  async allArticles(@Param('owner') owner: string): Promise<Article[]> {
+  async allArticles(@Param('owner') owner: string): Promise<any> {
     return await this.activityService.allArticles(owner);
   };
 
