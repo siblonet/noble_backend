@@ -92,9 +92,8 @@ export class ActivityService {
   }
 
 
-  async create(article: Article): Promise<any> {
-    const id = await this.boutiqueModel.create(article);
-    return {id: id._id}
+  async create(article: Article): Promise<Article> {
+    return await this.boutiqueModel.create(article);
   }
 
   generateUuid(): string {
