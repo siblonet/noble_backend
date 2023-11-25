@@ -112,9 +112,7 @@ export class ActivityService {
   }
 
   async updateArticles(id: string, article: Article): Promise<any> {
-    const admin = await this.boutiqueModel.findByIdAndUpdate(id, article, {
-      new: true,
-    });
+    const admin = await this.boutiqueModel.findByIdAndUpdate(id, article);
     if (!admin) {
       throw new HttpException('article not found', HttpStatus.NOT_FOUND);
     }
