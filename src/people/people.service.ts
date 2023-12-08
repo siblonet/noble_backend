@@ -167,7 +167,7 @@ export class PeopleService {
   }
 
   async allNonadmin(owner: string): Promise<Person[]> {
-    return await this.personModel.find({ owner: owner, admin: "false" });
+    return await this.personModel.find({ owner: owner, admin: owner === "matasa"? { $ne: "true" } : "false" });
 
   }
 
