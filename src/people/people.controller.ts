@@ -25,7 +25,7 @@ export class PeopleController {
 
   @Put('status/:id')
   PersonStatus(@Param('id') id: string, @Body() status: any) {
-    return this.peopleService.PersonUpte(id, status);
+    return this.peopleService.PersonStatus(id, status);
   }
 
   @Put('passwordupdate/:id')
